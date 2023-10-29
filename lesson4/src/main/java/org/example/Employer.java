@@ -5,10 +5,10 @@ public class Employer {
     private String position;
     private String email;
     private String phoneNumber;
-    private float salary;
+    private double salary;
     private int age;
 
-    public Employer(String FIO, String position, String email, String phoneNumber, float salary, int age) {
+    public Employer(String FIO, String position, String email, String phoneNumber, double salary, int age) {
         this.FIO = FIO;
         this.position = position;
         this.email = email;
