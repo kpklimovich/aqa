@@ -17,6 +17,10 @@ public class Employer {
         this.age = age;
     }
 
+    public int getAge() {
+        return age;
+    }
+
     public void getEmployerInformation() {
         System.out.println("Fio - " + FIO);
         System.out.println("Position - " + position);
