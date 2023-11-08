@@ -8,6 +8,7 @@ import java.util.List;
 
 public class FileUtil {
     private final static String delimiter = ";";
+
     public static void save(String filePath, AppData appData) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filePath));
 
@@ -18,7 +19,7 @@ public class FileUtil {
         int data[][] = appData.getData();
 
         for (int[] dataArray : data) {
-            writer.write(StringUtil.createStringWithSeparatorFromIntArray(dataArray, delimiter) + "\r\n");
+            writer.write(StringUtil.createStringWithDelimiterFromIntArray(dataArray, delimiter) + "\r\n");
         }
         writer.close();
     }

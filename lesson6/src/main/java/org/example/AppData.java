@@ -8,6 +8,7 @@ public class AppData {
         this.headers = new String[headersCount];
         this.data = new int[dataArraysCount][dataArraysLength];
     }
+
     public void setHeaders(String[] headers) {
         this.headers = headers;
     }
