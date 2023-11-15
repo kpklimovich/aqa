@@ -1,7 +1,7 @@
 package org.example;
 
 public class Main {
-    public static int foo(String[][] stringArray) throws MyArraySizeException, MyArrayDataException {
+    public static int matrixGrandSum(String[][] stringArray) throws MyArraySizeException, MyArrayDataException {
         final int matrixSize = 4;
         int sum = 0;
         if (stringArray.length != matrixSize || stringArray[0].length != matrixSize) {
@@ -24,7 +24,7 @@ public class Main {
         String[][] strArray1 = {{"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"4", "4", "1", "2"}};
         String[][] strArray2 = {{"1", "2", "3", "4"}, {"1", "2", "3", "4"}, {"4", "s", "1", "2"}, {"3", "4", "5"}};
         try {
-            foo(strArray2);
+            matrixGrandSum(strArray2);
         } catch (MyArraySizeException | MyArrayDataException e){
             e.printStackTrace();
         }
