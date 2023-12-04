@@ -21,8 +21,8 @@ public class Box<T extends Fruit> {
         return this.getWeight() == box.getWeight();
     }
 
-    public void pushToOtherBox(Box box) {
-        content.forEach(box::add);
+    public void pushToOtherBox(Box<T> box) {
+        box.content.addAll(content);
         content.clear();
     }
 }

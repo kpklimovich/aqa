@@ -1,5 +1,9 @@
 package org.example;
 
 public abstract class Fruit {
-    public abstract double getWeight();
+    protected double WEIGHT;
+
+    public double getWeight() {
+        return WEIGHT;
+    }
 }

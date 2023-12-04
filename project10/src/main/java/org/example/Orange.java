@@ -1,8 +1,7 @@
 package org.example;
 
-public class Orange extends Fruit{
-    @Override
-    public double getWeight() {
-        return 1.5;
+public class Orange extends Fruit {
+    public Orange() {
+        this.WEIGHT = 1.5;
     }
 }
