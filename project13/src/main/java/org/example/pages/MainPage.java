@@ -3,6 +3,10 @@ package org.example.pages;
 import org.example.utils.BrowserDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 import java.util.List;
 
 public class MainPage {
@@ -30,8 +34,19 @@ public class MainPage {
     private WebElement emailInput = BrowserDriver.getDriver()
             .findElement(new By.ByXPath("//input[@id='connection-email']"));
 
+    private WebElement installmentInput = BrowserDriver.getDriver()
+            .findElement(new By.ByXPath("//input[@id='score-instalment']"));
+
+    private WebElement accountNumberInput = BrowserDriver.getDriver()
+            .findElement(new By.ByXPath("//input[@id='score-arrears']"));
+
+    private WebElement internetPhoneInput = BrowserDriver.getDriver()
+            .findElement(new By.ByXPath("//input[@id='internet-phone']"));
+
     private WebElement submitButton = BrowserDriver.getDriver()
             .findElement(new By.ByXPath("//div[@class='pay__wrapper']//form[contains(@class, 'opened')]/button[@type='submit']"));
+
+    private By bePaidIframeXpath = new By.ByXPath("//iframe[@class='bepaid-iframe']");
 
     public void optionsDropDownButtonClick() {
         optionsDropDownButton.click();
@@ -72,5 +87,34 @@ public class MainPage {
 
     public void submitButtonClick() {
         submitButton.click();
+    }
+
+    public String getCaptionFromPhoneNumberInput() {
+        return phoneNumberInput.getAttribute("placeholder");
+    }
+
+    public String getCaptionFromSumInput() {
+        return sumInput.getAttribute("placeholder");
+    }
+
+    public String getCaptionFromEmailInput() {
+        return emailInput.getAttribute("placeholder");
+    }
+
+    public String getCaptionFromInternetPhoneInput() {
+        return internetPhoneInput.getAttribute("placeholder");
+    }
+
+    public String getCaptionFromInstallmentInput() {
+        return installmentInput.getAttribute("placeholder");
+    }
+
+    public String getCaptionFromAccountNumberInput() {
+        return accountNumberInput.getAttribute("placeholder");
+    }
+
+    public WebElement getBePaidIframe() {
+        return new WebDriverWait(BrowserDriver.getDriver(), Duration.ofSeconds(5))
+                .until(ExpectedConditions.presenceOfElementLocated((new By.ByXPath("//iframe[@class='bepaid-iframe']"))));
     }
 }

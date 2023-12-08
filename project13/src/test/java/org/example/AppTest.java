@@ -19,30 +19,83 @@ public class AppTest {
     }
 
     @Test
-    public void checkSectionName() {
+    public void checkCaptionsOnCommunicationServices() {
+        String selectedOption = "Услуги связи";
         MainPage mainPage = new MainPage();
-        final String EXPECTED_TEXT = "Онлайн пополнение\nбез комиссии";
-        String text = mainPage.getOnlinePayWithoutTaxesHeaderText();
-        Assertions.assertEquals(EXPECTED_TEXT, text, "Section header isn't correct.");
+        mainPage.optionsDropDownButtonClick();
+        mainPage.selectOptionFromDropDownList(selectedOption);
+        String expectedValueFromPhoneInput = "Номер телефона";
+        String expectedValueFromSumInput = "Сумма";
+        String expectedValueFromEmailInput = "E-mail для отправки чека";
+        Assertions.assertAll(
+            () -> Assertions.assertEquals(expectedValueFromPhoneInput, mainPage.getCaptionFromPhoneNumberInput(),
+                    "Caption from phone number input doesn't contain expected value."),
+            () -> Assertions.assertEquals(expectedValueFromSumInput, mainPage.getCaptionFromSumInput(),
+                    "Caption from sum input doesn't contain expected value."),
+            () -> Assertions.assertEquals(expectedValueFromEmailInput, mainPage.getCaptionFromEmailInput(),
+                    "Caption from email input doesn't contain expected value.")
+        );
     }
 
     @Test
-    public void payParentsListIsEmpty() {
+    public void checkCaptionsOnHomeInternet() {
+        String selectedOption = "Домашний интернет";
         MainPage mainPage = new MainPage();
-        Assertions.assertFalse(mainPage.getPayPartnersList().isEmpty(), "Pay partners list is empty.");
+        mainPage.optionsDropDownButtonClick();
+        mainPage.selectOptionFromDropDownList(selectedOption);
+        String expectedValueFromPhoneInput = "Номер абонента";
+        String expectedValueFromSumInput = "Сумма";
+        String expectedValueFromEmailInput = "E-mail для отправки чека";
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(expectedValueFromPhoneInput, mainPage.getCaptionFromInternetPhoneInput(),
+                        "Caption from internet input doesn't contain expected value."),
+                () -> Assertions.assertEquals(expectedValueFromSumInput, mainPage.getCaptionFromSumInput(),
+                        "Caption from sum input doesn't contain expected value."),
+                () -> Assertions.assertEquals(expectedValueFromEmailInput, mainPage.getCaptionFromEmailInput(),
+                        "Caption from email input doesn't contain expected value.")
+        );
     }
 
     @Test
-    public void checkMoreAboutServiceLink() {
-        final String EXPECTED_URL = "https://www.mts.by/help/poryadok-oplaty-i-bezopasnost-internet-platezhey/";
+    public void checkCaptionsOnInstallmentPay() {
+        String selectedOption = "Рассрочка";
         MainPage mainPage = new MainPage();
-        mainPage.moreAboutServiceLinkClick();
-        String currentURL = BrowserDriver.getDriver().getCurrentUrl();
-        Assertions.assertEquals(EXPECTED_URL, currentURL, "Current url isn't correct.");
+        mainPage.optionsDropDownButtonClick();
+        mainPage.selectOptionFromDropDownList(selectedOption);
+        String expectedValueFromInstallmentInput = "Номер счета на 44";
+        String expectedValueFromSumInput = "Сумма";
+        String expectedValueFromEmailInput = "E-mail для отправки чека";
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(expectedValueFromInstallmentInput, mainPage.getCaptionFromInstallmentInput(),
+                        "Caption from installment input doesn't contain expected value."),
+                () -> Assertions.assertEquals(expectedValueFromSumInput, mainPage.getCaptionFromSumInput(),
+                        "Caption from sum input doesn't contain expected value."),
+                () -> Assertions.assertEquals(expectedValueFromEmailInput, mainPage.getCaptionFromEmailInput(),
+                        "Caption from email input doesn't contain expected value.")
+        );
     }
 
     @Test
-    public void checkContinueButton() {
+    public void checkCaptionsOnDebt() {
+        String selectedOption = "Задолженность";
+        MainPage mainPage = new MainPage();
+        mainPage.optionsDropDownButtonClick();
+        mainPage.selectOptionFromDropDownList(selectedOption);
+        String expectedValueFromAccountNumberInput = "Номер счета на 2073";
+        String expectedValueFromSumInput = "Сумма";
+        String expectedValueFromEmailInput = "E-mail для отправки чека";
+        Assertions.assertAll(
+                () -> Assertions.assertEquals(expectedValueFromAccountNumberInput, mainPage.getCaptionFromAccountNumberInput(),
+                        "Caption from account number input doesn't contain expected value."),
+                () -> Assertions.assertEquals(expectedValueFromSumInput, mainPage.getCaptionFromSumInput(),
+                        "Caption from sum input doesn't contain expected value."),
+                () -> Assertions.assertEquals(expectedValueFromEmailInput, mainPage.getCaptionFromEmailInput(),
+                        "Caption from email input doesn't contain expected value.")
+        );
+    }
+
+    @Test
+    public void checkBePaidIframe() {
         String selectedOption = "Услуги связи";
         String phoneNumber = "297777777";
         String sum = "10";
@@ -54,8 +107,33 @@ public class AppTest {
         mainPage.insertToSumInput(sum);
         mainPage.setValueToEmailInput(email);
         mainPage.submitButtonClick();
+
+        BrowserDriver.getDriver().switchTo().frame(mainPage.getBePaidIframe());
         BePaidIframe bePaidIframe = new BePaidIframe();
-        Assertions.assertTrue(bePaidIframe.bePaidIframeIsDisplayed(), "Iframe isn't displayed");
+
+        String expectedValueFromCCNumberPlaceholder = "Номер карты";
+        String expectedValueFromCreditCardExpirationTimeLabel = "Срок действия";
+        String expectedValueFromCreditCardCVCInputLabel = "CVC";
+        String expectedValueFromCreditCardHolderNameInputLabel = "Имя держателя (как на карте)";
+
+        Assertions.assertAll(
+            () -> Assertions.assertTrue(bePaidIframe.getPaymentAmount().contains(sum),
+                    "Payment amount doesn't contain a sum."),
+            () -> Assertions.assertTrue(bePaidIframe.getSubmitPayButtonText().contains(sum),
+                    "The pay button doesn't contain a sum."),
+            () -> Assertions.assertTrue(bePaidIframe.getPaymentInfo().contains(phoneNumber),
+                    "A payment info doesn't contain phone number."),
+            () -> Assertions.assertEquals(bePaidIframe.getCreditCardNumberLabelText(), expectedValueFromCCNumberPlaceholder,
+                    "Credit card input doesn't contain expected text."),
+            () -> Assertions.assertEquals(bePaidIframe.getCreditCardExpirationTimeLabelText(), expectedValueFromCreditCardExpirationTimeLabel,
+                    "Expiration time input doesn't contain expected text."),
+            () -> Assertions.assertEquals(bePaidIframe.getCreditCardCVCInputLabelText(), expectedValueFromCreditCardCVCInputLabel,
+                    "CVC input doesnt contain expected text."),
+            () -> Assertions.assertEquals(bePaidIframe.getCreditCardHolderNameInputLabel(), expectedValueFromCreditCardHolderNameInputLabel,
+                    "CC holder name doesn't contain expected text."),
+            () -> Assertions.assertTrue(!bePaidIframe.isCardBrandsImagesSizeEmpty(),
+                    "Card brands list is empty.")
+        );
     }
 
     @AfterEach
